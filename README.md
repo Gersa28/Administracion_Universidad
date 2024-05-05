@@ -4,4 +4,4 @@ En el siguiente proyecto se ejemplifica brevemente un posible modelo de administ
 
 Se trata de un proyecto fullstack donde el usuario interacciona con la base de datos desde la interfaz visual propuesta.
 
-![Texto alternativo](imgs/imagen.jpg)
+![portada](imgs/imagen.jpg)

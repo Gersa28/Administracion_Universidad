@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{{ titulo }}</title>
+        
+    <link rel="short icon" href="{% static 'img/GRS.jpg' %}" />
+
+    <!-- Bootstrap CSS-->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap" >
+
+    <!-- Font Awasome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+    <!-- CSS Personalizado -->
+    <link rel="stylesheet" href="{% static 'css/gestionCursos.css' %}" />
+
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">UNGS</a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"> </span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/contacto">Contacto</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container py-4">
+      <div class="row">
+        <div class="col-md-4">
+          <h2 class="centrado">Gestión de Cursos</h2>
+          <div class="card">
+            <div class="card-body">
+              <form id="formularioCurso" action="registrarCurso/" method="POST"> {% csrf_token %}
+                <div class="form-group mb-2">
+                  <input type="text" id="txtCodigo" name="txtCodigo" class="form-control" minlength="3" maxlength="30" 
+                  placeholder="Código" autofocus required/>
+                </div>
+                <div class="form-group mb-2">
+                  <input type="text" id="txtNombre" name="txtNombre" class="form-control" minlength="3" maxlength="30" 
+                  placeholder="Nombre" autofocus required/>
+                </div>
+                <div class="form-group mb-2" >
+                  <input type="number" id="numCreditos" name="numCreditos" class="form-control" min="1" max="100" step="0.5" 
+                  placeholder="Credits" autofocus required/>
+                </div>
+                <div class="form-group">
+                  <button type="submit"  class="btn w-100 btn-success text-white"><i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <h2 class="centrado">Listado de Cursos</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th class="centrado">#</th>
+                  <th class="centrado">Cursos</th>
+                  <th class="centrado">Id</th>
+                  <th class="centrado">Cr&eacute;ditos</th>
+                  <th class="centrado" colspan="2">Opciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% comment %}
+                <!-- {% for c in cursos %} Para basado en Funciones-->
+                {% endcomment %} 
+                {% for c in object_list %}
+                      <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td style="vertical-align: middle; text-transform: uppercase;">{{c.nombre}}</td>
+                        <td class="centrado">{{c.id}}</td>
+                        <td class="centrado">{{c.credits}}</td>
+                        <td class="centrado">
+                          <a
+                            href="edicionCurso/{{c.id}}" 
+                            class="btn btn-sm btn-block btn-info"><i class="fa-solid fa-cloud-rain"></i> Editar</a
+                          > <!-- CONCATENAMOS EL ID EN EL ATRIBUTO HREF-->
+                        </td>
+                        <td class="centrado">
+                          <a
+                            href="eliminacionCurso/{{c.id}}"
+                            class="btn btn-sm btn-block btn-danger btnEliminacion"><i class="fa-solid fa-umbrella"></i> Eliminar</a
+                          > <!-- CONCATENAMOS EL ID EN EL ATRIBUTO HREF-->
+                        </td>
+                       </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"
+    ></script>
+    <!-- Sweetalert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{% static 'js/utils/notificacionSwal.js'%}"></script>
+    <!-- JS Personalizado -->
+    <script src="{% static 'js/gestionCursos.js'%}"></script>
+
+  </body>
+</html>
